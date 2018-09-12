@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+        <title>测一测五年后你的职位</title>
+        <meta name="description" content="测一测五年后你在学而思的职位是什么？">
+        <link href="static/css/app.css" rel="stylesheet">
+        <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js" type="text/javascript" charset="utf-8"></script>
+        <script>
+            (function(){
+                var arr= location.pathname.split("\/");
+                var baseUrl = location.origin + arr.slice(0,arr.length-1).join("/");
+                window.gxrWxShare = {
+                    config:{
+                        debug: false, 
+                        jsApiList: [  //需要使用的网页服务接口
+                        'onMenuShareTimeline', //分享给好友
+                        'onMenuShareAppMessage', //分享到朋友圈
+                        'onMenuShareQQ']
+                    },
+                    source:{
+                        imgUrl:baseUrl+"/static/img/wxshare.jpg",
+                        title:"测一测五年后你的职位",
+                        url:baseUrl+"/index.php",
+                        desc:"万万没想到，XXX(姓名)五年后将成为XXXX（职位），快来测一测你会是什么职位吧？"
+                    }
+                }
+                window.wxShareStart = wxstart;
+                //统计首页
+                ruiPost("http://yyjs.speiyou.cn/interface/public/index.php",{service:"App.NewTools_Records.F99",activity:"xiaozhao20180912"})
+                
+                function wxstart(opts){
+                    var arr= location.pathname.split("\/");
+                    var baseUrl = location.origin + arr.slice(0,arr.length-1).join("/");
+                    var url = opts.source.url;
+                wx.config(opts.config);
+                    
+                    wx.ready(function(){
+                        var imgurl = opts.source.imgUrl;
+                        var title = opts.source.title;
+                        var desc = opts.source.desc;
+                        wx.onMenuShareTimeline({
+                            title: title, 
+                            desc: desc, 
+                            link: url, 
+                            imgUrl: imgurl, 
+                            success: function () { 
+                                // 用户确认分享后执行的回调函数
+                                ruiPost("http://yyjs.speiyou.cn/interface/public/index.php",{service:"App.NewTools_Records.S96",activity:"xiaozhao20180912",status:"1"})
+                            },
+                            cancel: function () { 
+                                // 用户取消分享后执行的回调函数
+                            }
+                        });
+                        
+                        wx.onMenuShareAppMessage({
+                            title: title, 
+                            desc: desc, 
+                            link: url, 
+                            imgUrl: imgurl, 
+                            type: '', 
+                            dataUrl: '', 
+                            success: function () { 
+                                ruiPost("http://yyjs.speiyou.cn/interface/public/index.php",{service:"App.NewTools_Records.S96",activity:"xiaozhao20180912",status:"1"})
+                            },
+                            cancel: function () { 
+                            
+                            }
+                        });
+                        
+                        wx.onMenuShareQQ({
+                            title: title, // 分享标题
+                            desc: desc, // 分享描述
+                            link: url, // 分享链接
+                            imgUrl: imgurl, // 分享图标
+                            success: function () { 
+                            ruiPost("http://yyjs.speiyou.cn/interface/public/index.php",{service:"App.NewTools_Records.S96",activity:"xiaozhao20180912",status:"1"})
+                            },
+                            cancel: function () { 
+                                
+                            }
+                        });
+                    });
+                }
+            
+                function ruiPost(url, data, fn,fn2) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", url, true);
+                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");  
+                    xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 304)) {
+                        fn && fn.call(this, xhr.responseText);
+                    }else{
+                        fn2 && fn2(xhr)
+                    }
+                    };
+                    var _d = "",c=0;
+                    for(var i in data){
+                        _d+= c?("&"+i+"="+data[i]):(i+"="+data[i]);
+                        c++;
+                    }
+                    xhr.send(_d);
+                }
+            })();
+           
+        </script>
+    </head>
+    <body>
+        <div id="app"></div>
+        <script type=text/javascript src="static/js/manifest.js"></script>
+        <script type=text/javascript src="static/js/vendor.js"></script>
+        <script type=text/javascript src="static/js/app.js"></script>
+    </body>
+    <script>
+        
+    </script>
+</html>
